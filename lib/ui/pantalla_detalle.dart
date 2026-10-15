@@ -70,7 +70,7 @@ class _PantallaDetalleState extends State<PantallaDetalle> {
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<String>(
-                      value: item.estado,
+                      initialValue: item.estado,
                       decoration: const InputDecoration(labelText: 'Estado actual', border: OutlineInputBorder()),
                       items: ['Pendiente', 'En proceso', 'Resuelta']
                           .map((v) => DropdownMenuItem(value: v, child: Text(v)))

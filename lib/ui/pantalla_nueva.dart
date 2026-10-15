@@ -72,7 +72,7 @@ class _PantallaNuevaState extends State<PantallaNueva> {
                 campo('Descripción', descripcion, lineas: 4),
                 campo('Cliente', cliente),
                 DropdownButtonFormField<String>(
-                  value: categoria,
+                  initialValue: categoria,
                   decoration: const InputDecoration(labelText: 'Categoría', border: OutlineInputBorder()),
                   items: ['Software', 'Hardware', 'Redes']
                       .map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
