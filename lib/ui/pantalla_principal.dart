@@ -42,6 +42,12 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
     return const Color(0xFFAC4052);
   }
 
+  Color colorPrioridad(String estado) {
+    if (estado == 'Baja') return const Color(0xFF147D64);
+    if (estado == 'Media') return const Color(0xFFB56B13);
+    return const Color(0xFFAC4052);
+  }
+
   Widget resumen(String etiqueta, String valor, IconData icono) {
     return Expanded(
       child: Card(
@@ -176,26 +182,37 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                                   itemBuilder: (context, i) {
                                     final item = items[i];
                                     return Card(
+                                      clipBehavior: Clip.hardEdge,
                                       margin: const EdgeInsets.only(bottom: 10),
-                                      child: ListTile(
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                        title: Text(item.titulo, style: const TextStyle(fontWeight: FontWeight.w600)),
-                                        subtitle: Padding(
-                                          padding: const EdgeInsets.only(top: 8),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text('${item.id}  ·  ${item.cliente}'),
-                                              const SizedBox(height: 6),
-                                              Text(item.estado, style: TextStyle(
-                                                color: colorEstado(item.estado), fontWeight: FontWeight.bold,
-                                              )),
-                                            ],
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(8),
+                                            width: double.infinity,
+                                            color: colorPrioridad(item.prioridad),
+                                            child: Text('Prioridad: ${item.prioridad}', style: TextStyle(color: Color(0xFFFFFFFF))),
                                           ),
-                                        ),
-                                        trailing: const Icon(Icons.chevron_right),
-                                        onTap: () => abrirDetalle(item),
-                                      ),
+                                          ListTile(
+                                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                            title: Text(item.titulo, style: const TextStyle(fontWeight: FontWeight.w600)),
+                                            subtitle: Padding(
+                                              padding: const EdgeInsets.only(top: 8),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text('${item.id}  ·  ${item.cliente}'),
+                                                  const SizedBox(height: 6),
+                                                  Text(item.estado, style: TextStyle(
+                                                    color: colorEstado(item.estado), fontWeight: FontWeight.bold,
+                                                  ))
+                                                ],
+                                              ),
+                                            ),
+                                            trailing: const Icon(Icons.chevron_right),
+                                            onTap: () => abrirDetalle(item),
+                                          ),
+                                        ]
+                                      )
                                     );
                                   },
                                 ),

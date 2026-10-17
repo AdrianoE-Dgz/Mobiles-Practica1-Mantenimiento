@@ -15,7 +15,9 @@ class _PantallaNuevaState extends State<PantallaNueva> {
   final descripcion = TextEditingController();
   final cliente = TextEditingController();
   String categoria = 'Software';
-  bool ocupado = false;
+  String prioridad = 'Baja';
+  bool ocupadoCat = false;
+  bool ocupadoPri = false;
 
   @override
   void dispose() {
@@ -27,10 +29,11 @@ class _PantallaNuevaState extends State<PantallaNueva> {
 
   Future<void> guardar() async {
     if (!(llave.currentState?.validate() ?? false)) return;
-    setState(() => ocupado = true);
+    setState(() => ocupadoCat = true);
+    setState(() => ocupadoPri = true);
     try {
       await widget.gestor.crear(
-        titulo.text.trim(), descripcion.text.trim(), cliente.text.trim(), categoria,
+        titulo.text.trim(), descripcion.text.trim(), cliente.text.trim(), categoria, prioridad,
       );
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
@@ -38,7 +41,10 @@ class _PantallaNuevaState extends State<PantallaNueva> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('No se pudo registrar: $e')));
       }
     } finally {
-      if (mounted) setState(() => ocupado = false);
+      if (mounted) {
+        setState(() => ocupadoCat = false);
+        setState(() => ocupadoPri = false);
+      }
     }
   }
 
@@ -76,11 +82,19 @@ class _PantallaNuevaState extends State<PantallaNueva> {
                   decoration: const InputDecoration(labelText: 'Categoría', border: OutlineInputBorder()),
                   items: ['Software', 'Hardware', 'Redes']
                       .map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
-                  onChanged: ocupado ? null : (v) => setState(() => categoria = v ?? 'Software'),
+                  onChanged: ocupadoCat ? null : (v) => setState(() => categoria = v ?? 'Software'),
+                ),
+                const SizedBox(height: 24),
+                DropdownButtonFormField<String>(
+                  initialValue: prioridad,
+                  decoration: const InputDecoration(labelText: 'Categoría', border: OutlineInputBorder()),
+                  items: ['Baja', 'Media', 'Alta']
+                      .map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                  onChanged: ocupadoPri ? null : (v) => setState(() => prioridad = v ?? 'Baja'),
                 ),
                 const SizedBox(height: 24),
                 FilledButton.icon(
-                  onPressed: ocupado ? null : guardar,
+                  onPressed: ocupadoCat || ocupadoPri ? null : guardar,
                   icon: const Icon(Icons.save_outlined),
                   label: const Text('Registrar'),
                 ),
