@@ -16,6 +16,8 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
   bool cargando = true;
   String? error;
   String busqueda = '';
+  String filtroEstado = 'Todos';
+  String filtroPrioridad = 'Todas';
 
   @override
   void initState() {
@@ -90,7 +92,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
 
   @override
   Widget build(BuildContext context) {
-    final items = g.buscar(busqueda);
+    final items = g.buscar(busqueda, filtroEstado, filtroPrioridad);
     return Scaffold(
       appBar: AppBar(
         title: const Text('NexaSoft | Incidencias'),
@@ -156,15 +158,40 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 5),
-                          child: TextField(
-                            decoration: const InputDecoration(
-                              labelText: 'Buscar incidencias',
-                              hintText: 'Ejemplo: WiFi, correo, pantalla',
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(),
+                          child: Row(spacing: 5,children: [
+                            Flexible(
+                              flex: 3,
+                              child: TextField(
+                                decoration: const InputDecoration(
+                                  labelText: 'Buscar incidencias',
+                                  hintText: 'Ejemplo: WiFi, correo, pantalla',
+                                  prefixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (texto) => setState(() => busqueda = texto),
+                              )
                             ),
-                            onChanged: (texto) => setState(() => busqueda = texto),
-                          ),
+                            Flexible(
+                              child: DropdownButtonFormField<String>(
+                                initialValue: filtroEstado,
+                                decoration: const InputDecoration(labelText: 'Estado actual', border: OutlineInputBorder()),
+                                items: ['Todos', 'Pendiente', 'En proceso', 'Resuelta']
+                                    .map((v) => DropdownMenuItem(value: v, child: Text(v)))
+                                    .toList(),
+                                onChanged: (texto) => setState(() => filtroEstado = texto!),
+                              )
+                            ),
+                            Flexible(
+                              child: DropdownButtonFormField<String>(
+                                initialValue: filtroPrioridad,
+                                decoration: const InputDecoration(labelText: 'Prioridad actual', border: OutlineInputBorder()),
+                                items: ['Todas', 'Baja', 'Media', 'Alta']
+                                    .map((v) => DropdownMenuItem(value: v, child: Text(v)))
+                                    .toList(),
+                                onChanged: (texto) => setState(() => filtroPrioridad = texto!),
+                              )
+                            )
+                          ])
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),

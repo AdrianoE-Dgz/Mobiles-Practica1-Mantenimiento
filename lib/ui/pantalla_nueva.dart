@@ -87,7 +87,7 @@ class _PantallaNuevaState extends State<PantallaNueva> {
                 const SizedBox(height: 24),
                 DropdownButtonFormField<String>(
                   initialValue: prioridad,
-                  decoration: const InputDecoration(labelText: 'Categoría', border: OutlineInputBorder()),
+                  decoration: const InputDecoration(labelText: 'Prioridad', border: OutlineInputBorder()),
                   items: ['Baja', 'Media', 'Alta']
                       .map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
                   onChanged: ocupadoPri ? null : (v) => setState(() => prioridad = v ?? 'Baja'),
